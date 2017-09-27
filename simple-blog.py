@@ -3,8 +3,15 @@ import os
 from flask import Flask
 from flask import Markup
 from flask import render_template
+from flask import g
 
 app = Flask(__name__)
+app.config.from_json('blog_configuration.json',True)
+
+
+@app.before_request
+def before_request():
+    g.site_name = app.config["SIMPLEBLOG_SITE_NAME"]
 
 
 @app.route('/')
@@ -13,10 +20,11 @@ def index():
     return render_template('index.html', **locals())
 
 
-@app.route('/games/', defaults={'page_number': 0})
-@app.route('/games/<int:page_number>')
-def games(page_number):
-    markdown_files = os.listdir(os.path.join(app.static_folder, 'games_md'))
+@app.route('/<content_type>/', defaults={'page_number': 0})
+@app.route('/<content_type>/<int:page_number>')
+def games(content_type, page_number):
+    # TODO: fix crash if folder not found. Handle gracefully
+    markdown_files = os.listdir(os.path.join(app.static_folder, 'md_' + content_type))
     file_list = ''
     for md_file in markdown_files:
         file_list += '<li>' + md_file + '</li>'
@@ -24,9 +32,9 @@ def games(page_number):
     return render_template('entry_list.html', **locals())
 
 
-@app.route('/games/<game>')
-def game(game):
-    return render_template('game.html', **locals())
+@app.route('/<content_type>/<entry>')
+def game(content_type,entry):
+    return render_template('entry.html', **locals())
 
 
 if __name__ == '__main__':
