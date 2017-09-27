@@ -1,5 +1,5 @@
 {% extends 'main_template.html' %}
-{% block title_prepend %}Games - {% endblock %}
+{% block title_prepend %}{{ content_type.title() }} - {% endblock %}
 {% block body_content %}
     <ul>
         {{ file_list }}

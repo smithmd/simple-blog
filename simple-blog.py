@@ -22,18 +22,19 @@ def index():
 
 @app.route('/<content_type>/', defaults={'page_number': 0})
 @app.route('/<content_type>/<int:page_number>')
-def games(content_type, page_number):
+def entry_list(content_type, page_number):
     # TODO: fix crash if folder not found. Handle gracefully
     markdown_files = os.listdir(os.path.join(app.static_folder, 'md_' + content_type))
     file_list = ''
     for md_file in markdown_files:
         file_list += '<li>' + md_file + '</li>'
     file_list = Markup(file_list)
+
     return render_template('entry_list.html', **locals())
 
 
-@app.route('/<content_type>/<entry>')
-def game(content_type,entry):
+@app.route('/<content_type>/<entry_file>')
+def entry(content_type,entry_file):
     return render_template('entry.html', **locals())
 
 
