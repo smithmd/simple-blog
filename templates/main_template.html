@@ -1,0 +1,11 @@
+<html>
+<head>
+    <title>{% block title_prepend %}{% endblock %}Shitty Gamer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+<body>
+    <h1>Shitty Gamer</h1>
+    {% block body_content %}{% endblock %}
+</body>
+</html>
