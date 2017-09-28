@@ -1,4 +1,4 @@
-import markdown
+import markdown as Markdown
 import os
 from flask import Flask
 from flask import Markup
@@ -20,8 +20,8 @@ def index():
     return render_template('index.html', **locals())
 
 
-@app.route('/<content_type>/', defaults={'page_number': 0})
-@app.route('/<content_type>/<int:page_number>')
+@app.route('/b/<content_type>/', defaults={'page_number': 0})
+@app.route('/b/<content_type>/<int:page_number>')
 def entry_list(content_type, page_number):
     # TODO: fix crash if folder not found. Handle gracefully
     markdown_files = os.listdir(os.path.join(app.static_folder, 'md_' + content_type))
@@ -33,8 +33,12 @@ def entry_list(content_type, page_number):
     return render_template('entry_list.html', **locals())
 
 
-@app.route('/<content_type>/<entry_file>')
+@app.route('/b/<content_type>/<entry_file>')
 def entry(content_type,entry_file):
+    file = os.path.join(app.static_folder, 'md_' + content_type + '/' + entry_file + '.md')
+    with open(file, 'r') as f:
+            md = f.read()
+    entry_content = Markup(Markdown.markdown(md))
     return render_template('entry.html', **locals())
 
 
